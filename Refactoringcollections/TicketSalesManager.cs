@@ -10,65 +10,64 @@ namespace Refactoringcollections
 {
     internal class TicketSalesManager
     {
-        private List<Ticket> tickets;
-        public TicketSalesManager()
-        {
-            tickets = new List<Ticket>();
-        }
+            private List<Ticket> tickets = new List<Ticket>();
 
 
-        public int NextTicketNumber()
-        {
-            Random random = new Random();
-            int ticketNumber = random.Next(1000, 9999);
-
-            while (tickets.Exists(t => t.TicketNumber == ticketNumber))
+            public static int NextTicketNumber()
             {
-                ticketNumber = random.Next(1000, 9999);
+
+                Random random = new Random();
+                int ticketNumber = random.Next(1, 8000);
+                return ticketNumber;
             }
 
-            return ticketNumber;
-        }
-    
 
-        public Ticket AddTicket(Ticket ticket)
-        {
-            ticket.TicketNumber= NextTicketNumber();
-            tickets.Add(ticket);
-         
-            return ticket;
-        }
-        public bool RemoveTicket(Ticket ticket)
-        {
-      
-                Ticket ticketToRemove = tickets.FirstOrDefault(t => t.TicketNumber == ticket.TicketNumber);
-                if (ticketToRemove != null)
-                {
-                    tickets.Remove(ticketToRemove);
-                    return true;
-                }
-                return false;
-            }      
-
-        public decimal SalesTotal()
-        {
-            return tickets.Sum(t => t.Price);
-        }
-
-        public int AmountOfTickets()
-        {
-            return tickets.Count;
-        }
-
-        public void DisplayTickets()
-        {
-            foreach (var ticket in tickets)
+            public Ticket AddTicket(Ticket ticket)
             {
-                Console.WriteLine($"Ticket {ticket.TicketNumber}, Price:{ticket.Price}SEK, Place Preference:{ticket.PlacePreference}");
+                tickets.Add(ticket);
+
+                return ticket;
+            }
+            public bool RemoveTicket(Ticket ticket)
+            {
+
+                return tickets.Remove(ticket);
+            }
+
+            public decimal SalesTotal()
+            {
+                decimal total = 0;
+                foreach (var ticket in tickets)
+                {
+                    total += ticket.Price();
+                }
+                return total;
+            }
+
+            public int AmountOfTickets()
+            {
+                return tickets.Count;
+            }
+
+            public void DisplayTickets()
+            {
+                foreach (var ticket in tickets)
+                {
+                    Console.WriteLine($"Ticket Number:{ticket.TicketNumber}, Price:{ticket.Price()}SEK, Place Preference:{ticket.Place}");
+                }
+
             }
         }
     }
-}
+
+
+
+
+
+
+
+
+
 
 
 
